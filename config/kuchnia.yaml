@@ -1,0 +1,50 @@
+substitutions:
+  device_name: sonoffextreme_1
+
+esphome:
+  name: sonoff-mini-extreme
+
+esp32:
+  board: esp32dev
+  framework:
+    type: arduino
+
+packages:
+  common: !include .common.yaml
+
+
+status_led:
+  pin:
+    number: GPIO19
+    inverted: true
+
+binary_sensor:
+  - platform: gpio
+    pin: GPIO00
+    id: reset
+    filters:
+      - invert:
+      - delayed_off: 50ms
+    on_press:
+      - switch.toggle:
+          id: relay_1
+
+  - platform: gpio
+    name: ${device_name}_switch
+    pin: GPIO27
+    id: switch_1
+    filters:
+      - invert:
+      - delayed_off: 50ms
+    on_press:
+      then:
+        - switch.toggle:
+            id: relay_1
+
+switch:
+  - platform: gpio
+    name: ${device_name}_switch
+    icon: "mdi:lightbulb_outline"
+    pin: GPIO26
+    id: relay_1
+    restore_mode: restore_default_off

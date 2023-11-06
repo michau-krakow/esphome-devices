@@ -1,0 +1,115 @@
+substitutions:
+  device_name: "sonoff-dualr3"
+
+esphome:
+  name: "sonoff-dualr3"
+  friendly_name: Sonoff Dual R3
+  comment: "Sonoff Dual R3"
+
+esp32:
+  board: esp32dev
+
+packages:
+  common: !include .common.yaml
+
+
+button:
+  - platform: restart
+    name: "Restart"
+    id: button_restart
+
+light:
+  - platform: status_led
+    name: "LED"
+    id: led_status
+    pin:
+      number: GPIO13
+      inverted: True
+
+# Realy outputs
+switch:
+  - platform: gpio
+    name: "relay1"
+    pin: GPIO27
+    id: relay_1
+
+  - platform: gpio
+    name: "relay2"
+    pin: GPIO14
+    id: relay_2
+
+binary_sensor:
+  - platform: gpio
+    name: "button"
+    id: sensor_button
+    pin:
+      number: GPIO00
+      mode:
+        input: True
+        pullup: True
+      inverted: True
+    disabled_by_default: True
+    icon: 'mdi:radiobox-blank'
+    filters:
+      - delayed_on: 50ms
+    on_press:
+      - switch.toggle: relay_1
+
+  - platform: gpio
+    name: button_s1
+    pin:
+      number: GPIO32
+      mode:
+        input: True
+        pullup: True
+      inverted: True
+    filters:
+      - delayed_on_off: 50ms
+    on_press:
+      - switch.turn_on: relay_2
+      - delay: 1min
+      - switch.turn_off: relay_2
+
+  - platform: gpio
+    name: button_s2
+    icon: mdi:ceiling-light-multiple-outline
+    pin:
+      number: GPIO33
+      mode:
+        input: True
+        pullup: True
+      inverted: True
+    filters:
+      - delayed_on_off: 50ms
+    on_press:
+      - switch.toggle: relay_2
+
+# Energy meter PCB v2.0
+uart:
+  tx_pin: GPIO25
+  rx_pin: GPIO26
+  baud_rate: 4800
+  parity: NONE
+  stop_bits: 2
+
+sensor:  
+  - platform: bl0939
+    update_interval: 30s
+    voltage:
+      name: 'Voltage'
+    current_1:
+      name: 'Current 1'
+      disabled_by_default: True
+    current_2:
+      name: 'Current 2'
+      disabled_by_default: True
+    active_power_1:
+      name: 'Power 1'
+    active_power_2:
+      name: 'Power 2'
+    energy_1:
+      name: 'Energy 1'
+    energy_2:
+      name: 'Energy 2'
+    energy_total:
+      name: 'Energy Total'
