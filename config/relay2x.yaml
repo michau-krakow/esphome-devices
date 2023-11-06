@@ -1,0 +1,42 @@
+substitutions:
+  device_name: relay2x_1
+
+esphome:
+  name: relay2x
+  comment: "ESP12F_Relay_X2_v1.1"
+
+esp8266:
+  board: esp12e
+
+packages:
+  common: !include .common.yaml
+
+# Use the blue LED in the device as a status LED, which will blink if there are warnings (slow) or errors (fast)
+status_led:
+  pin:
+    number: GPIO2
+    inverted: True
+
+# x2 relay outputs, exposed as switches in Home Assistant
+switch:
+  - platform: gpio
+    pin: GPIO5
+    name: Relay1
+    id: relay1
+  - platform: gpio
+    pin: GPIO4
+    name: Relay2
+    id: relay2
+
+binary_sensor:
+  # Local toggle button
+  - platform: gpio
+    pin:
+      number: GPIO0
+      inverted: True
+    filters:
+      - delayed_on: 50ms
+    name: "Relay1 Toggle Button"
+    on_press:
+      then:
+        - switch.toggle: relay1
