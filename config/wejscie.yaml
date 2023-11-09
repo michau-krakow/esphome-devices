@@ -1,0 +1,116 @@
+substitutions:
+  device_name: "wejscie"
+  
+esphome:
+  name: "wejscie"
+  friendly_name: Wejscie
+  comment: "Nous Courtain Module L12T"
+
+esp8266:
+  board: esp01_1m
+
+packages:
+  common: !include .common.yaml
+
+
+http_request:
+  useragent: esphome/device
+  timeout: 5s
+
+status_led:
+  pin:
+    number: GPIO12
+    inverted: yes
+
+output:
+  - platform: gpio
+    pin: GPIO05
+    id: relay_1
+
+  - platform: gpio
+    pin: GPIO04
+    id: relay_2
+
+# - platform: esp8266_pwm
+#   pin: GPIO14
+#   id: button_led_output
+#   inverted: yes
+
+light:
+  - platform: binary
+    name: "Nad wejsciem"
+    icon: mdi:ceiling-light-outline
+    id: light_1
+    output: relay_1
+
+  - platform: binary
+    name: "W dachu"
+    icon: mdi:ceiling-light-multiple-outline
+    id: light_2
+    output: relay_2
+
+# - platform: monochromatic
+#   id: button_led
+#   output: button_led_output
+
+binary_sensor:
+  - platform: gpio
+    name: S1 input
+    icon: mdi:light-switch
+    pin:
+      number: GPIO01
+      mode:
+        input: true
+        pullup: true
+      inverted: true
+    id: button_s1
+    filters:
+      - delayed_on_off: 50ms
+    on_press:
+      then:
+        - http_request.post:
+            url: http://parking-lamp.local/light/parking-lamp/toggle
+            headers:
+              Content-Type: application/json
+            json: {}
+            verify_ssl: false
+            on_response:
+              then:
+                - logger.log:
+                    format: 'Response status: %d, Duration: %u ms'
+                    args:
+                      - status_code
+                      - duration_ms
+
+  - platform: gpio
+    name: S2 input
+    icon: mdi:light-switch
+    pin:
+      number: GPIO03
+      mode:
+        input: true
+        pullup: true
+      inverted: true
+    id: button_s2
+    filters:
+      - delayed_on_off: 50ms
+    on_click:
+    - min_length: 50ms
+      max_length: 500ms
+      then:
+        - light.turn_on: light_1
+        - light.turn_on: light_2
+        - delay: 10min
+        - light.turn_off: light_1
+        - light.turn_off: light_2
+    - min_length: 500ms
+      max_length: 1000ms
+      then:
+        - light.turn_off: light_1
+        - light.turn_off: light_2
+    on_double_click:
+      min_length: 50ms
+      max_length: 500ms
+      then:
+        - light.toggle: light_1
+        - light.toggle: light_2
