@@ -1,8 +1,10 @@
 substitutions:
-  device_name: sonoffextreme_1
+  device_name: kuchnia
 
 esphome:
-  name: sonoff-mini-extreme
+  name: kuchnia
+  friendly_name: "Kuchnia"
+  comment: "Sonoff MiniR4 Extreme"
 
 esp32:
   board: esp32dev
@@ -12,39 +14,52 @@ esp32:
 packages:
   common: !include .common.yaml
 
+#######################################
+# Device specific Config Begins Below #
+#######################################
 
 status_led:
   pin:
     number: GPIO19
     inverted: true
 
+output:
+  # Physical relay on GPIO
+  - platform: gpio
+    pin: GPIO26
+    id: relay_1
+
+light:
+  - platform: binary
+    id: light_1
+    name: ${device_name}
+    icon: mdi:string-lights
+    restore_mode: restore_default_off
+    output: relay_1
+
 binary_sensor:
   - platform: gpio
     pin: GPIO00
-    id: reset
+    id: button
     filters:
       - invert:
       - delayed_off: 50ms
     on_press:
-      - switch.toggle:
-          id: relay_1
+      - light.toggle:
+          id: light_1
 
   - platform: gpio
-    name: ${device_name}_switch
+    name: wylacznik_s1
     pin: GPIO27
-    id: switch_1
+    id: s1
     filters:
       - invert:
       - delayed_off: 50ms
     on_press:
       then:
-        - switch.toggle:
-            id: relay_1
-
-switch:
-  - platform: gpio
-    name: ${device_name}_switch
-    icon: "mdi:lightbulb_outline"
-    pin: GPIO26
-    id: relay_1
-    restore_mode: restore_default_off
+        - light.turn_on:
+            id: light_1
+    on_release:
+      then:
+        - light.turn_off:
+            id: light_1
