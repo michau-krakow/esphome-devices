@@ -1,0 +1,38 @@
+substitutions:
+  device_name: biuro-dimmer
+
+esphome:
+  name: $device_name
+  friendly_name: Biuro
+  comment: Moes WS-105
+
+esp8266:
+  board: esp01_1m
+
+packages:
+  common: !include .common.yaml
+
+# Disable UART logging - we need UART to talk to TuyaMCU
+logger:
+  baud_rate: 0
+
+# UART for TuyaMCU
+uart:
+  rx_pin: GPIO3
+  tx_pin: GPIO1
+  baud_rate: 9600
+
+# TuyaMCU connection. Check log for the correct values
+tuya:
+#[21:12:30][C][tuya:034]:   Datapoint 6: int value (value: 0)
+#[21:12:30][C][tuya:032]:   Datapoint 1: switch (value: OFF)
+#[21:12:30][C][tuya:034]:   Datapoint 2: int value (value: 717)
+
+light:
+  - platform: "tuya"
+    id: dimmer1
+    name: "dimmer"
+    dimmer_datapoint: 2
+    switch_datapoint: 1
+    min_value: 0
+    max_value: 1000
