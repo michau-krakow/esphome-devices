@@ -45,3 +45,7 @@ text_sensor:
       name: IP Address
     dns_address:
       name: DNS Address
+
+button:
+  - platform: restart
+    name: Restart
