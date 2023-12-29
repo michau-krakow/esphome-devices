@@ -1,0 +1,48 @@
+substitutions:
+  device_name: salon
+
+esphome:
+  name: ${device_name}
+  friendly_name: Salon
+  comment: OXT 1-ch dimmer
+
+bk72xx:
+  board: cb3s
+
+packages:
+  common: !include .common.yaml
+
+# Disable UART logging - we need UART to talk to dimming MCU
+logger:
+  baud_rate: 0
+
+uart:
+  tx_pin: GPIO11
+  baud_rate: 9600
+
+light:
+  - platform: oxt_dimmer
+    channels:
+    - name: lampa
+      id: lampa
+      default_transition_length: 1s
+      sensing_pin:
+        number: GPIO08 # CB3S module
+        inverted: true
+        mode: input_pullup
+
+status_led:
+  pin:
+    number: GPIO06
+    inverted: true
+
+binary_sensor:
+  - platform: gpio
+    pin: GPIO24
+    id: button1
+    filters:
+      - invert:
+      - delayed_off: 50ms
+    on_press:
+      - light.toggle:
+          id: lampa
