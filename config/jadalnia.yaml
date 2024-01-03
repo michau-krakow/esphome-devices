@@ -9,3 +9,8 @@ esphome:
 packages:
   device: !include .sonoff_minir4_extreme.yaml
   common: !include .common.yaml
+  xiaomi1: !include
+    file: .xiaomi-lywsd03mmc
+    vars:
+      xiaomi_friendly_name:  Salon
+      xiaomi_name: salon

@@ -1,0 +1,52 @@
+# Usage instruction:
+#   packages:
+#     xiaomi: !include
+#       file: .xiaomi-lywsd03mmc
+#       vars:
+#         xiaomi_friendly_name: [Device Name]
+#         xiaomi_name: [must match substitutions - see below]
+
+substitutions:
+  xiaomi_mac_salon:     A4:C1:38:85:B3:28
+  xiaomi_key_salon:     "b51f063d93f02e67ea16f90636a49d74"
+  # xiaomi_mac_justyna: A4:C1:38:6B:6A:59
+  # xiaomi_key_justyna: "388d6be471c2c7f86e7801e668cf66c5"
+  xiaomi_mac_justyna:   A4:C1:38:06:3F:47
+  xiaomi_key_justyna:   "066592b17a1675fb1bdeddbc97c13fce"
+  xiaomi_mac_mati:      A4:C1:38:7B:86:2B
+  xiaomi_key_mati:      "88e8e5a60117ab347e71234f977d9948"
+  xiaomi_mac_biuro:     A4:C1:38:3B:4B:4F
+  xiaomi_key_biuro:     "74fcf862240d741c11badb6bf0ee832f"
+  xiaomi_mac_sypialnia: A4:C1:38:72:F0:21
+  xiaomi_key_sypialnia: "bf27ac8b555bf6eb1f2f68cb3a94130c"
+
+esp32_ble_tracker:
+
+binary_sensor:
+  - platform: ble_presence
+    id: ble_presence_${xiaomi_name}
+    name: Xiaomi ${xiaomi_friendly_name}
+    mac_address: ${xiaomi_mac_${xiaomi_name}}
+
+sensor:
+  - platform: ble_rssi
+    id: ble_rssi_${xiaomi_name}
+    name: Xiaomi ${xiaomi_friendly_name} RSSI
+    mac_address: ${xiaomi_mac_${xiaomi_name}}
+
+  - platform: xiaomi_lywsd03mmc
+    id: xiaomi_lywsd03mmc_${xiaomi_name}
+    mac_address: ${xiaomi_mac_${xiaomi_name}}
+    bindkey: ${xiaomi_key_${xiaomi_name}}
+    temperature:
+      icon: mdi:thermometer-bluetooth
+      name: Xiaomi ${xiaomi_friendly_name} Temperature
+      id: xiaomi_temperature_${xiaomi_name}
+    humidity:
+      icon: mdi:water-percent
+      name: Xiaomi ${xiaomi_friendly_name} Humidity
+      id: xiaomi_humidity_${xiaomi_name}
+    battery_level:
+      icon: mdi:battery-bluetooth-variant
+      name: Xiaomi ${xiaomi_friendly_name} Battery
+      id: xiaomi_battery_${xiaomi_name}
