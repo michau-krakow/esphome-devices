@@ -1,0 +1,63 @@
+substitutions:
+  device_name: mati-ledy
+
+esphome:
+  name: mati-ledy
+  friendly_name: "Mati Ledy"
+  comment: "WT32C3-S5"
+
+esp32:
+  board: esp32-c3-devkitm-1
+  framework:
+    type: arduino
+
+packages:
+  common: !include .common.yaml
+
+time:
+  - platform: homeassistant
+    id: homeassistant_time
+
+#######################################
+# Device specific Config Begins Below #
+#######################################
+
+status_led:
+  pin:
+    number: GPIO8
+    inverted: true
+
+# Make sure logging is not using the serial port
+logger:
+  baud_rate: 0
+
+# serial connection to Tuya MCU
+uart:
+  rx_pin: GPIO20
+  tx_pin: GPIO21
+  baud_rate: 9600
+
+tuya:
+
+light:
+  - platform: tuya
+    id: led1
+    name: "WL5 LED Controller"
+    restore_mode: RESTORE_DEFAULT_OFF
+    color_interlock: true                 # infinite loop isue when false (false is default)
+    # on/off
+    switch_datapoint: 20
+    # brightness
+    dimmer_datapoint: 22
+    min_value: 0
+    max_value: 1000                       # default is 255
+    # CCT
+    color_temperature_datapoint: 23
+    color_temperature_invert: true        # set to true if connected as stated on the controller
+    color_temperature_max_value: 1000     # Max value is 1000 (default is 255)
+    cold_white_color_temperature: 6000 K  # Change depending on LED strip
+    warm_white_color_temperature: 2700 K  # Change depending on LED strip
+    # RGB channels
+    color_datapoint: 24
+    color_type: hsv
+
