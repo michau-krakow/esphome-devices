@@ -19,3 +19,8 @@ packages:
     vars:
       xiaomi_friendly_name:  Biuro
       xiaomi_name: biuro
+  xiaomi3: !include
+    file: .xiaomi-lywsd03mmc
+    vars:
+      xiaomi_friendly_name:  Lazienka
+      xiaomi_name: lazienka

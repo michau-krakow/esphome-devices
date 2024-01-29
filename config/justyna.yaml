@@ -14,8 +14,3 @@ packages:
     vars:
       xiaomi_friendly_name:  Justyna
       xiaomi_name: justyna
-  xiaomi2: !include
-    file: .xiaomi-lywsd03mmc
-    vars:
-      xiaomi_friendly_name:  Mati
-      xiaomi_name: mati

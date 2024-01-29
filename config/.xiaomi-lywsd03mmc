@@ -19,6 +19,14 @@ substitutions:
   xiaomi_key_biuro:     "74fcf862240d741c11badb6bf0ee832f"
   xiaomi_mac_sypialnia: A4:C1:38:72:F0:21
   xiaomi_key_sypialnia: "bf27ac8b555bf6eb1f2f68cb3a94130c"
+  xiaomi_mac_lazienka:  A4:C1:38:31:B0:A4
+  xiaomi_key_lazienka:  "b121cbceedcda504dfe57268f869e1b5"
+  xiaomi_mac_garaz:     A4:C1:38:D2:D8:9C
+  xiaomi_key_garaz:     "38d3eaf26cad9017f3a93c29658c289a"
+  xiaomi_mac_garderoba: A4:C1:38:E7:B0:42
+  xiaomi_key_garderoba: "412eeeb1991e1c474dac086d4172d66c"
+  xiaomi_mac_kuchnia:   A4:C1:38:80:A3:C3
+  xiaomi_key_kuchnia:   "868bb735b509678a24e581532941f35f"
 
 esp32_ble_tracker:
 

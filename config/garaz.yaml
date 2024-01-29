@@ -9,6 +9,16 @@ esphome:
 packages:
   device: !include .sonoff_minir4_extreme.yaml
   common: !include .common.yaml
+  xiaomi1: !include
+    file: .xiaomi-lywsd03mmc
+    vars:
+      xiaomi_friendly_name:  Garaz
+      xiaomi_name: garaz
+  xiaomi2: !include
+    file: .xiaomi-lywsd03mmc
+    vars:
+      xiaomi_friendly_name:  Garderoba
+      xiaomi_name: garderoba
 
 http_request:
   useragent: esphome/device

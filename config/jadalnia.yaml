@@ -14,3 +14,8 @@ packages:
     vars:
       xiaomi_friendly_name:  Salon
       xiaomi_name: salon
+  xiaomi2: !include
+    file: .xiaomi-lywsd03mmc
+    vars:
+      xiaomi_friendly_name:  Kuchnia
+      xiaomi_name: kuchnia
