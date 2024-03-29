@@ -1,0 +1,12 @@
+substitutions:
+  device_name: garaz
+  friendly_name: Garaz
+
+esphome:
+  name: ${device_name}
+  friendly_name: "${friendly_name}"
+
+packages:
+  device: !include .sonoff_minir4_extreme.yaml
+  common: !include .common.yaml
+
