@@ -10,3 +10,34 @@ packages:
   device: !include .sonoff_minir4_extreme.yaml
   common: !include .common.yaml
 
+http_request:
+  useragent: esphome/device
+  timeout: 10s
+
+binary_sensor:
+  # delete 's1' definition (from .sonoff_minir4_extreme.yaml package)
+  - id: !remove s1
+
+  # redefine 's1' button
+  - platform: gpio
+    name: s1
+    id: s1
+    pin: GPIO27
+    filters:
+      - invert:
+      - delayed_off: 50ms
+    on_press:
+      then:
+        - http_request.post:
+            url: http://parking-lamp.local/light/parking-lamp/toggle
+            headers:
+              Content-Type: application/json
+            json: {}
+            verify_ssl: false
+            on_response:
+              then:
+                - logger.log:
+                    format: 'Response status: %d, Duration: %u ms'
+                    args:
+                      - status_code
+                      - duration_ms
