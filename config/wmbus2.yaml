@@ -1,0 +1,39 @@
+substitutions:
+  device_name: wmbus
+
+esphome:
+  name: wmbus2
+  comment: "WMBUS meter reader - kotlownia"
+
+esp8266:
+  board: d1_mini  # WeMos D1 Mini, esp-12f, 4MB flash
+  # board: nodemcuv2  # NodeMCU v2 and v3, esp-12f, 4MB flash
+
+packages:
+  common: !include .common.yaml
+  meter1a: !include
+    file: .wmbus-sensor.yaml
+    vars:
+      meter_id: '0xB8DAF9'    # Wodomierz glowny
+  meter1b: !include
+    file: .wmbus-sensor.yaml
+    vars:
+      meter_id: '0x416E67BE'  # Wodomierz ogrod
+
+time:
+  - platform: sntp
+    id: time_sntp
+
+# override defaults from .common.yaml
+api:
+  reboot_timeout: 0s # don't reboot when no clients are connected
+
+# wifi:
+#   networks:
+#     - ssid: *
+#       password: *
+
+status_led:
+  pin:
+    number: GPIO0
+    inverted: true
