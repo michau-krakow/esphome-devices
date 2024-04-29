@@ -1,0 +1,65 @@
+substitutions:
+  device_name: wmbus
+
+esphome:
+  name: wmbus1
+  comment: "WMBUS meter reader - wodomierz"
+
+esp8266:
+  board: d1_mini  # WeMos D1 Mini, esp-12f, 4MB flash
+
+packages:
+  common: !include .common.yaml
+  meter1a: !include
+    file: .wmbus-sensor.yaml
+    vars:
+      meter_id: '0xB8DAF9'    # Wodomierz glowny
+  meter1b: !include
+    file: .wmbus-sensor.yaml
+    vars:
+      meter_id: '0x416E67BE'  # Wodomierz ogrod
+  meter2: !include
+    file: .wmbus-sensor.yaml
+    vars:
+      meter_id: '0xB8D4A5'    # Darek?
+  meter3: !include
+    file: .wmbus-sensor.yaml
+    vars:
+      meter_id: '0xB8E554'    # Marek
+  meter4: !include
+    file: .wmbus-sensor.yaml
+    vars:
+      meter_id: '0xB908FC'
+  meter5: !include
+    file: .wmbus-sensor.yaml
+    vars:
+      meter_id: '0xB90A62'    # Jacek
+  meter6: !include
+    file: .wmbus-sensor.yaml
+    vars:
+      meter_id: '0x41514C04'  # Beata?
+  meter7: !include
+    file: .wmbus-sensor.yaml
+    vars:
+      meter_id: '0x41514C11'  # Łukasz?
+  meter8: !include
+    file: .wmbus-sensor.yaml
+    vars:
+      meter_id: '0x40A8B9C9'
+  meter9: !include
+    file: .wmbus-sensor.yaml
+    vars:
+      meter_id: '0x40F55952'
+
+time:
+  - platform: sntp
+    id: time_sntp
+
+# override defaults from .common.yaml
+api:
+  reboot_timeout: 0s # don't reboot when no clients are connected
+
+# wifi:
+#   networks:
+#     - ssid: ele-l29
+#       password: PASSword1234
