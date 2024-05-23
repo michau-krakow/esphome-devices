@@ -37,7 +37,9 @@ uart:
   tx_pin: GPIO21
   baud_rate: 9600
 
+# Register the Tuya MCU connection
 tuya:
+  # ignore_mcu_update_on_datapoints: [ 22, 23, 24 ]
 
 light:
   - platform: tuya
@@ -61,3 +63,30 @@ light:
     color_datapoint: 24
     color_type: hsv
 
+# cv.Optional(CONF_MIN_VALUE_DATAPOINT): cv.uint8_t,
+# cv.Optional(CONF_RGB_DATAPOINT): cv.invalid(COLOR_CONFIG_ERROR),
+# cv.Optional(CONF_HSV_DATAPOINT): cv.invalid(COLOR_CONFIG_ERROR),
+# cv.Inclusive(CONF_COLOR_DATAPOINT, "color"): cv.uint8_t,
+# cv.Optional(CONF_COLOR_INTERLOCK, default=False): cv.boolean,
+
+# "CMND":"
+# DimmerRange 100,1024 | 
+# TuyaMCU 11,20 | TUYA_MCU_FUNC_REL1,20
+# TuyaMCU 26,21 | TUYA_MCU_FUNC_MODESET,21
+# TuyaMCU 21,23 | TUYA_MCU_FUNC_DIMMER,23
+# TuyaMCU 24,24 | TUYA_MCU_FUNC_RGB,24
+# TuyaMCU 81,26 | TUYA_MCU_FUNC_TIMER1,26
+# TuyaMCU 98,101" TUYA_MCU_FUNC_ERROR,101
+
+# [19:52:31][C][tuya:062]:   Datapoint 21: enum (value: 1)
+# [19:52:31][C][tuya:054]:   Datapoint 101: raw (value: 42.00.00.00.00.FC.26.36.30.0D.05.DC (12))
+# [19:52:31][C][tuya:060]:   Datapoint 25: string value (value: 07363602000003e803e800000000363602007803e803e80000000036360200f003e803e800000000363602003d03e803e80000000036360200ae03e803e800000000363602011303e803e800000000)
+# [19:52:31][C][tuya:054]:   Datapoint 30: raw (value: 00.00.00.01.01.01.06.00.00.00.00.00.14.00 (14))
+# [19:52:31][C][tuya:054]:   Datapoint 31: raw (value: 00.00)
+# [19:52:31][C][tuya:054]:   Datapoint 32: raw (value: 00.00)
+# [19:52:31][C][tuya:056]:   Datapoint 34: switch (value: OFF)
+# [19:52:31][C][tuya:054]:   Datapoint 33: raw (value: 00.01.01.1D.00.FA.01.E0.00.00.00.00 (12))
+# [19:52:31][C][tuya:054]:   Datapoint 209: raw (value: 00.00)
+# [19:52:31][C][tuya:054]:   Datapoint 210: raw (value: 00.00)
+# [19:52:31][C][tuya:062]:   Datapoint 104: enum (value: 4)
+# [19:52:31][C][tuya:062]:   Datapoint 105: enum (value: 0)
