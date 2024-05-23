@@ -1,9 +1,9 @@
 substitutions:
-  device_name: parking-lamp
+  device_name: rekuperator
 
 esphome:
-  name: parking-lamp
-  friendly_name: "Parking Lamp"
+  name: rekuperator
+  friendly_name: "Przekaznik Rekuperatora"
 
 esp8266:
   board: esp8285
@@ -16,13 +16,11 @@ packages:
 # Device specific Config Begins Below #
 #######################################
 
-light:
-  - platform: binary
-    id: light_1
-    name: ${device_name}
-    icon: mdi:spotlight-beam
-    restore_mode: restore_default_off
+fan:
+  - id: reku_1
+    platform: binary
     output: relay_1
+    name: "Rekuperator"    
 
 binary_sensor:
   - id: !extend button_1
@@ -30,7 +28,5 @@ binary_sensor:
       - invert:
       - delayed_off: 50ms
     on_press:
-      - light.toggle:
-          id: light_1
-
-  - id: !remove switch_s1
+      - fan.toggle:
+          id: reku_1
