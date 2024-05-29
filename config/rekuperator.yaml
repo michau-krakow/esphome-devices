@@ -16,11 +16,40 @@ packages:
 # Device specific Config Begins Below #
 #######################################
 
+time:
+  - platform: sntp
+    on_time:
+      # On: every morning on weekdays
+      - cron: '0 0 06 * * *'  # 'sec min h dayofmonth mon dayofweek'
+        then:
+          - fan.turn_on: reku_1
+
+      # Off at high noon during hot summer days
+      - cron: '0 0 12 * 6-8 *'  # 'sec min h dayofmonth mon dayofweek'
+        then:
+          - fan.turn_off: reku_1
+
+      # On at night on summer
+      - cron: '0 0 18 * 5-9 *'  # 'sec min h dayofmonth mon dayofweek'
+        then:
+          - fan.turn_on: reku_1
+
+      # Off at night during winter
+      - cron: '0 0 21 * 12-2 *'  # 'sec min h dayofmonth mon dayofweek'
+        then:
+          - fan.turn_off: reku_1
+      - cron: '0 0 21 * 1-2 *'  # 'sec min h dayofmonth mon dayofweek'
+        then:
+          - fan.turn_off: reku_1
+
+
 fan:
   - id: reku_1
     platform: binary
     output: relay_1
-    name: "Rekuperator"    
+    name: Rekuperator
+    icon: mdi:air-filter
+    restore_mode: RESTORE_DEFAULT_OFF
 
 binary_sensor:
   - id: !extend button_1
