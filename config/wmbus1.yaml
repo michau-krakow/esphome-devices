@@ -51,6 +51,14 @@ packages:
     vars:
       meter_id: '0x40F55952'
 
+# override pins
+wmbus:
+  led_pin:
+    number: GPIO2
+    inverted: true
+  gdo0_pin: GPIO0
+  gdo2_pin: GPIO16
+
 time:
   - platform: sntp
     id: time_sntp
@@ -63,3 +71,27 @@ api:
 #   networks:
 #     - ssid: ele-l29
 #       password: PASSword1234
+
+i2c:
+  id: i2c_bus_1
+  frequency: 100kHz
+  scan: true
+  # scl: GPIO5
+  # sda: GPIO4
+
+sensor:
+  - platform: bme280_i2c
+    id: bme280_chip
+    address: 0x76     # or 0x77 if jumper is soldered
+    temperature:
+      id: bme280_temperature
+      name: "Temperature"
+      oversampling: 8x
+    pressure:
+      id: bme280_pressure
+      name: "Pressure"
+      oversampling: 8x
+    humidity:
+      id: bme280_humidity
+      name: "Humidity"
+      oversampling: 8x
