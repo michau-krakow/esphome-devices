@@ -71,3 +71,45 @@ api:
 #   networks:
 #     - ssid: *
 #       password: *
+
+i2c:
+  id: i2c_bus_1
+  frequency: 100kHz
+  scan: true
+  # scl: GPIO5
+  # sda: GPIO4
+
+sensor:
+  - platform: bme280_i2c
+    id: bme280_chip
+    address: 0x76     # or 0x77 if jumper is soldered
+    temperature:
+      id: bme280_temperature
+      name: "Temperature BME"
+      oversampling: 8x
+      filters:
+        - calibrate_linear:
+            method: least_squares
+            datapoints:
+              - 18.2 -> 10.0
+              - 23.9 -> 17.8
+              - 28.5 -> 22.7
+    pressure:
+      id: bme280_pressure
+      name: "Pressure BME"
+      oversampling: 8x
+    humidity:
+      id: bme280_humidity
+      name: "Humidity BME"
+      oversampling: 8x
+
+  - platform: sht3xd
+    id: sht31d_chip
+    address: 0x44
+    temperature:
+      name: "Temperature SHT"
+      id: sht31d_temperature
+    humidity:
+      name: "Humidity SHT"
+      id: sht31d_humidity
+    update_interval: 60s
