@@ -1,0 +1,61 @@
+# Usage:
+# include this file into `packages` section of your configuration
+# ```
+# packages:
+#   wmbus1: !include
+#     file: .wmbus-sensor.yaml
+#     vars:
+#       meter_id: '0x00B8DAF9'
+# ````
+defaults:
+  meter_id: 0
+
+# wmbus source code
+external_components:
+  - source: github://SzczepanLeon/esphome-components@main
+    components: [ wmbus ]
+    refresh: 365days
+
+# wmbus signals definition for cc1101 radio
+wmbus:
+  clk_pin:  GPIO14
+  miso_pin: GPIO12
+  mosi_pin: GPIO13
+  cs_pin:   GPIO15
+  gdo0_pin: GPIO05
+  gdo2_pin: GPIO04
+  led_pin:
+    number: GPIO02
+    inverted: true
+  led_blink_time: "1s"
+  log_unknown: True
+
+sensor:
+  - platform: wmbus
+    meter_id: ${meter_id}
+    listener_id: "wmbus_${meter_id}"
+    add_prefix: true   # don't automatically add 'meter_id' to sensor name
+    type: izar
+    total_water_m3:
+      name: "total water"
+      id: "wmbus_${meter_id}_total_water"
+    last_month_total_water_m3:
+      name: "last month water"
+      id: "wmbus_${meter_id}_last_month_water"
+    current_month_total_water_l:
+      name: "this month water"
+      id: "wmbus_${meter_id}_this_month_l"
+      icon: "mdi:water-plus"
+    remaining_battery_life_y:
+      name: "battery life"
+      id: "wmbus_${meter_id}_battery_y"
+      unit_of_measurement: "y"
+      device_class: battery
+      entity_category: diagnostic
+    rssi:
+      name: "RSSI"
+      id: "wmbus_${meter_id}_rssi"
+    # - current_alarms:
+    # - previous_alarms
+    # - transmit_period_s
+    # - lqi:
