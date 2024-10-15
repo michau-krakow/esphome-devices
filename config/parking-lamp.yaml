@@ -4,28 +4,17 @@ substitutions:
 esphome:
   name: parking-lamp
   friendly_name: "Parking Lamp"
-  comment: "Sonoff MiniR2"
 
 esp8266:
   board: esp8285
 
 packages:
+  device: !include .sonoff_minir2.yaml
   common: !include .common.yaml
 
 #######################################
 # Device specific Config Begins Below #
 #######################################
-
-status_led:
-  pin:
-    number: GPIO13
-    inverted: true
-
-output:
-  # Physical relay on GPIO
-  - platform: gpio
-    pin: GPIO12
-    id: relay_1
 
 light:
   - platform: binary
@@ -36,9 +25,7 @@ light:
     output: relay_1
 
 binary_sensor:
-  - platform: gpio
-    pin: GPIO00
-    id: button_1
+  - id: !extend button_1
     filters:
       - invert:
       - delayed_off: 50ms
@@ -46,25 +33,4 @@ binary_sensor:
       - light.toggle:
           id: light_1
 
-# External GPIO switch (S1) - not used
-# - platform: gpio
-#   pin: GPIO04
-#   id: switch_s1
-#   filters:
-#     - invert:
-#     - delayed_off: 50ms
-#   on_press:
-#     then:
-#       - switch.toggle:
-#         id: light_1
-
-# output:
-#   - platform: esp8266_pwm
-#     id: blue_led
-#     pin: GPIO13
-#     inverted: True
-
-# light:
-#   - platform: monochromatic
-#     name: blueled
-#     output: blue_led
+  - id: !remove switch_s1
