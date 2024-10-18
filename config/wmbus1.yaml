@@ -87,13 +87,6 @@ sensor:
       id: bme280_temperature
       name: "Temperature BME"
       oversampling: 8x
-      filters:
-        - calibrate_linear:
-            method: least_squares
-            datapoints:
-              - 18.2 -> 10.0
-              - 23.9 -> 17.8
-              - 28.5 -> 22.7
     pressure:
       id: bme280_pressure
       name: "Pressure BME"
@@ -113,3 +106,22 @@ sensor:
       name: "Humidity SHT"
       id: sht31d_humidity
     update_interval: 60s
+
+  - platform: template
+    name: "Temperature"
+    id: temperature
+    icon: "mdi:thermometer"
+    device_class: temperature
+    state_class: measurement
+    unit_of_measurement: "°C"
+    lambda: |-
+      return id(bme280_temperature).state;
+    update_interval: 60s
+    filters:
+      - calibrate_linear:
+          method: least_squares
+          datapoints:
+            - 10.4 -> 3.2
+            - 18.2 -> 10.0 #?
+            - 23.9 -> 17.8
+            - 28.5 -> 22.7
